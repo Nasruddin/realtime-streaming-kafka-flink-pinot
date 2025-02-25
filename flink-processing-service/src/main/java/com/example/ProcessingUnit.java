@@ -28,6 +28,7 @@ public class ProcessingUnit {
                         ");"
         );
 
+        // Kafka sink
         tableEnv.executeSql(
                 "CREATE TABLE RiderOut (\n" +
                         "  `ride_id` STRING,\n" +
@@ -45,7 +46,8 @@ public class ProcessingUnit {
                         "  'format' = 'json'\n" +
                         ");"
         );
-
+        
+        // Pushing to Kafka sink as well
         tableEnv.executeSql(
             "INSERT INTO RiderOut\n" +
             "SELECT \n" +
@@ -56,6 +58,35 @@ public class ProcessingUnit {
             "amount * 10, \n" +
             "ride_status, \n" +
             "request_time \n" +
+            "FROM RideTest"
+        );
+
+        // Postgres sink as well
+        tableEnv.executeSql(
+            "CREATE TABLE rides (" +
+            "   ride_id STRING PRIMARY KEY NOT ENFORCED, " +
+            "   rider_id STRING, " +
+            "   driver_id STRING, " +
+            "   amount DOUBLE, " +
+            "   ride_status STRING " +
+            ") WITH (" +
+            "   'connector' = 'jdbc', " +
+            "   'url' = 'jdbc:postgresql://postgres:5432/rides_db', " +
+            "   'table-name' = 'rides', " +
+            "   'username' = 'postgresuser', " +
+            "   'password' = 'postgrespw', " +
+            "   'driver' = 'org.postgresql.Driver'" +
+            ")"
+        );
+        // Pushing to Postgres sink as well
+        tableEnv.executeSql(
+            "INSERT INTO rides\n" +
+            "SELECT \n" +
+            "ride_id, \n" +
+            "rider_id, \n" +
+            "driver_id, \n" +
+            "amount, \n" +
+            "ride_status \n" +
             "FROM RideTest"
         );
     }
