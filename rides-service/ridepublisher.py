@@ -2,7 +2,7 @@ import random, time
 from mysql.connector import connect, Error
 import json
 from kafka import KafkaProducer
-import datetime
+from datetime import datetime
 import uuid
 import os
 
@@ -39,7 +39,8 @@ try:
                 "driver_id": row[2],
                 "location_id": row[3],
                 "amount": row[4],
-                "ride_status": row[5]
+                "ride_status": row[5],
+                "request_time": int(time.time() * 1000)
                 }
                 for row in cursor
             ]
@@ -70,7 +71,8 @@ def create_new_ride():
         "driver_id": str(uuid.uuid4()),
         "location_id": 300654,
         "amount": ride[1],
-        "ride_status": "In Progress"
+        "ride_status": "In Progress",
+        "request_time": int(time.time() * 1000)
     }
 
 while True:
@@ -83,7 +85,7 @@ while True:
 
     events_processed += 1
     if events_processed % 100 == 0:
-        print(f"{str(datetime.datetime.now())} Flushing after {events_processed} events")
+        print(f"{str(datetime.now())} Flushing after {events_processed} events")
         producer.flush()
 
     time.sleep(random.randint(orderInterval/5, orderInterval)/1000)

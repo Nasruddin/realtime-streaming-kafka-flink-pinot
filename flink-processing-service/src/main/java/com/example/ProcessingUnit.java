@@ -16,15 +16,15 @@ public class ProcessingUnit {
                         "  `location_id` STRING,\n" +
                         "  `amount` FLOAT,\n" +
                         "  `ride_status` STRING,\n" +
-                        "  `request_time` TIMESTAMP(3) METADATA FROM 'timestamp',\n" +
-                        "  `processing_time` as PROCTIME()\n" +
+                        "  `request_time` BIGINT\n" +
                         ") WITH (\n" +
                         "  'connector' = 'kafka',\n" +
                         "  'topic' = 'rides',\n" +
                         "  'properties.bootstrap.servers' = 'kafka:29092',\n" +
                         "  'properties.group.id' = 'test',\n" +
                         "  'scan.startup.mode' = 'latest-offset',\n" +
-                        "  'format' = 'json'\n" +
+                        "  'format' = 'json',\n" +
+                        "  'json.timestamp-format.standard' = 'ISO-8601'\n" +
                         ");"
         );
 
@@ -37,28 +37,28 @@ public class ProcessingUnit {
                         "  `location_id` STRING,\n" +
                         "  `amount` FLOAT,\n" +
                         "  `ride_status` STRING,\n" +
-                        "  `request_time` TIMESTAMP(3) METADATA FROM 'timestamp',\n" +
-                        "  `processing_time` as PROCTIME()\n" +
+                        "  `request_time` BIGINT" +
                         ") WITH (\n" +
                         "  'connector' = 'kafka',\n" +
                         "  'topic' = 'riders_out',\n" +
                         "  'properties.bootstrap.servers' = 'kafka:29092',\n" +
-                        "  'format' = 'json'\n" +
+                        "  'format' = 'json',\n" +
+                        "  'json.timestamp-format.standard' = 'ISO-8601'\n" +
                         ");"
         );
         
         // Pushing to Kafka sink as well
         tableEnv.executeSql(
             "INSERT INTO RiderOut\n" +
-            "SELECT \n" +
-            "ride_id, \n" +
-            "rider_id, \n" +
-            "driver_id, \n" +
-            "location_id, \n" +
-            "amount * 10, \n" +
-            "ride_status, \n" +
-            "request_time \n" +
-            "FROM RideTest"
+                "SELECT \n" +
+                "ride_id, \n" +
+                "rider_id, \n" +
+                "driver_id, \n" +
+                "location_id, \n" +
+                "amount * 10, \n" +
+                "ride_status, \n" +
+                "request_time \n" +
+                "FROM RideTest"
         );
 
         // Postgres sink as well
@@ -71,7 +71,7 @@ public class ProcessingUnit {
             "   ride_status STRING " +
             ") WITH (" +
             "   'connector' = 'jdbc', " +
-            "   'url' = 'jdbc:postgresql://postgres:5432/rides_db', " +
+            "   'url' = 'jdbc:postgresql://postgres:5433/rides_db', " +
             "   'table-name' = 'rides', " +
             "   'username' = 'postgresuser', " +
             "   'password' = 'postgrespw', " +

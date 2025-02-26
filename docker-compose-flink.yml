@@ -7,6 +7,8 @@ services:
     command: jobmanager
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    networks:
+      - realtimeanalytics    
 
   taskmanager:
     image: flink:1.17-java11
@@ -17,6 +19,8 @@ services:
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
       - TASK_MANAGER_NUMBER_OF_TASK_SLOTS=2
+    networks:
+      - realtimeanalytics    
 
   flinksql:
     image: flink:1.17-java11
@@ -24,6 +28,8 @@ services:
     depends_on:
       - jobmanager
     entrypoint: ["flink", "sql-client", "embedded"]
+    networks:
+      - realtimeanalytics    
 
   flink-processing-service:
     build: flink-processing-service
@@ -35,12 +41,14 @@ services:
       - FLINK_JOBMANAGER_HOST=jobmanager
       - FLINK_JOBMANAGER_PORT=6123
       - FLINK_PARALLELISM=2
+    networks:
+      - realtimeanalytics    
 
   postgres:
     image: postgres:14
     container_name: postgres
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       POSTGRES_USER: postgresuser
       POSTGRES_PASSWORD: postgrespw
@@ -48,5 +56,11 @@ services:
     volumes:
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - realtimeanalytics    
 volumes:
   pgdata: 
+
+networks:
+  realtimeanalytics:
+    name: realtimeanalytics  

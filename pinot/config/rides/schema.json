@@ -1,0 +1,20 @@
+{
+  "schemaName": "rides_schema",
+  "dimensionFieldSpecs": [
+    { "name": "ride_id", "dataType": "STRING" },
+    { "name": "rider_id", "dataType": "STRING" },
+    { "name": "driver_id", "dataType": "STRING" },
+    { "name": "ride_status", "dataType": "STRING" }
+  ],
+  "metricFieldSpecs": [
+    { "name": "amount", "dataType": "FLOAT" }
+  ],
+  "dateTimeFieldSpecs": [
+        {
+          "name": "request_time",
+          "dataType": "TIMESTAMP",
+          "format": "1:MILLISECONDS:EPOCH",
+          "granularity": "1:MILLISECONDS"
+        }
+    ]
+}

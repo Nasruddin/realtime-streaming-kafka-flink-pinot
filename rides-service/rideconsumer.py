@@ -37,7 +37,7 @@ for message in consumer:
         value = message.value # Raw message (string format)
         
         # Print the message
-        print("\nReceived Kafka Message:")
+        print("\nReceived Kafka Message:==>")
         print(f"Key: {key}")
         print(f"Value: {value}")
 
