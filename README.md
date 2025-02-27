@@ -109,7 +109,7 @@ docker-compose restart pinot-add-table
 ```
 ![Verify pinot table](images/pinot-add-table.png)
 
-#### Once the data is processed and stored in **Apache Pinot**, query it using:
+- Once the data is processed and stored in **Apache Pinot**, query it using:
 
 ```bash
 curl -X POST "http://localhost:9000/query/sql" -H "Content-Type: application/json" -d '{"sql":"SELECT * FROM rides LIMIT 10"}'
@@ -128,19 +128,21 @@ SELECT * FROM rides LIMIT 10;
 
 ### 4. Query PostgreSQL
 
-Access the databases with:
+**Access the databases with:**
 
-```bash
-docker exec -it postgres psql -U postgresuser -d rides_db
-```
+  ```bash
+  docker exec -it postgres psql -U postgresuser -d rides_db
+  ```
 
-![Verify Pinot UI is working](images/postgres-data.png)
+  ![Verify Pinot UI is working](images/postgres-data.png)
 
 ### 5. Dashboard on Superset
-##### Connect to Pinot and create dataset
+Superset is used for data visualization and dashboarding.
+
+- **Access Superset:** `http://localhost:8088`
 ![Verify Superset is working](images/superset.png)
 
-##### Verify dataset
+- **Superset dataset:**
 ![Verify Superset is working](images/superset-dataset.png)
 
 ## Stopping and Cleaning Up
