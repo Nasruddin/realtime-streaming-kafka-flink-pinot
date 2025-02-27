@@ -93,7 +93,10 @@ docker exec -it kafka kafka-console-consumer --topic riders_out --bootstrap-serv
 
 ### 3. Query Apache Pinot
 
-Make sure schema and table is added
+Pinot is used for OLAP (Online Analytical Processing) queries on real-time data.
+- **Access Pinot UI:** `http://localhost:9000`
+
+- **Verify schemas & tables are generated:**
 ```bash
 curl -X GET "http://localhost:9000/schemas"
 ```
