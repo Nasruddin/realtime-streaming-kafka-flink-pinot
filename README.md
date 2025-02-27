@@ -37,6 +37,12 @@ cd realtime-streaming-kafka-flink-pinot-postgres
 
 ### 2. Start Services using Docker Compose
 
+Make sure to build and package Flink Java code
+```bash
+cd flink-processing-service
+mvn clean package -DskipTests 
+```
+
 ```bash
 docker compose \ 
     -f docker-compose-base.yml \
