@@ -103,6 +103,12 @@ curl -X GET "http://localhost:9000/tables"
 ```
 ![Verify flink topic events](images/pinot-tables.png)
 
+NOTE - If you don't find schemas and table then re-run below image:
+```bash
+docker-compose restart pinot-add-table
+```
+![Verify pinot table](images/pinot-add-table.png)
+
 #### Once the data is processed and stored in **Apache Pinot**, query it using:
 
 ```bash
@@ -110,7 +116,13 @@ curl -X POST "http://localhost:9000/query/sql" -H "Content-Type: application/jso
 ```
 or 
 
-#### Open Pinot UI (localhost:9000)
+## Running Queries
+### Open Pinot UI (localhost:9000)
+#### Query Pinot:
+```sql
+SELECT * FROM rides LIMIT 10;
+```
+
 ![Verify Pinot UI is working](images/realtime-flink-events.png)
 
 
@@ -124,6 +136,12 @@ docker exec -it postgres psql -U postgresuser -d rides_db
 
 ![Verify Pinot UI is working](images/postgres-data.png)
 
+### 5. Dashboard on Superset
+##### Connect to Pinot and create dataset
+![Verify Superset is working](images/superset.png)
+
+##### Verify dataset
+![Verify Superset is working](images/superset-dataset.png)
 
 ## Stopping and Cleaning Up
 
