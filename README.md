@@ -182,7 +182,19 @@ docker compose \
   sudo kill -9 <PID>
   sudo kill -15 <PID>
   ```
-
+- Kafka Specific 
+  ```bash
+  docker stop kafka zookeeper 
+  docker rm kafka zookeeper
+  ```
+  ZooKeeper stores broker metadata under /tmp/zookeeper, so you need to clear it:
+    ```bash
+    rm -rf /tmp/zookeeper
+    ```
+  Kafka maintains log data, which might be causing conflicts. Delete the Kafka log directory:
+    ```bash
+    rm -rf /tmp/kafka-logs  
+    ```
 ## Contributing
 
 Feel free to fork this repository and submit pull requests with improvements.
